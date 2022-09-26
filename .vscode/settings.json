@@ -24,6 +24,7 @@
         "notna",
         "pyplot",
         "QDII",
+        "qhdx",
         "setdiff",
         "showlegend",
         "Startdate",
@@ -33,6 +34,7 @@
         "WINDCODE",
         "xticks",
         "yscale",
-        "yticks"
+        "yticks",
+        "csmarapi"
     ]
 }
