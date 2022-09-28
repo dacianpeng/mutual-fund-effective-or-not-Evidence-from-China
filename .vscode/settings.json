@@ -3,9 +3,12 @@
         "ADJCLOSE",
         "areaclass",
         "AREACLASS",
+        "asfreq",
         "astype",
         "CSMAR",
+        "csmarapi",
         "cumprod",
+        "cumsum",
         "dask",
         "dataframe",
         "Dividendper",
@@ -34,7 +37,6 @@
         "WINDCODE",
         "xticks",
         "yscale",
-        "yticks",
-        "csmarapi"
+        "yticks"
     ]
 }
