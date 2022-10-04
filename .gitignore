@@ -4,5 +4,6 @@ cache/*
 *.log
 token.txt
 
+!my_cache.py
 !README.md
 !.gitkeep
