@@ -1,4 +1,6 @@
 data/*
+cache/*
+*cache*
 *.log
 token.txt
 
