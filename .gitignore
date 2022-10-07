@@ -1,8 +1,12 @@
-data/*
+data/AMAC/*
+data/CSMAR/*
+data/SVC/*
+data/Win.d/*
 cache/*
 *cache*
 *.log
 token.txt
+test*
 
 !my_cache.py
 !README.md

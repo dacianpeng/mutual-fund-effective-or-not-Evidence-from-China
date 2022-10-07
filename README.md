@@ -26,6 +26,12 @@ FUND_UnitClassInfo基金概况 — 基金份额类别信息
 
 前四个条件筛选
 
+
+|       | share            | nav            |
+| ----- | ---------------- | -------------- |
+| stock | stock fund share | stock fund nav |
+| mixed | mixed fund share | mixed fund nav |
+
 单独筛选情况下，四个单独的条件分别能保留下来0.619, 0.955 , 0.974, 0.832的数据
 
 连续筛选情况下，
