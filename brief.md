@@ -98,5 +98,3 @@ long-short yield > 0, one-sided t test result
 ![full-market-non-NA-count](image/README/full-market-non-NA-count.png)
 
 ![full-market-non-NA-ratio](image/README/full-market-non-NA-ratio.png)
-
-
