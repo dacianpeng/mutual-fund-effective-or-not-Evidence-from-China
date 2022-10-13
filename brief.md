@@ -9,7 +9,7 @@
 **Validation**
 
 - `AMAC` : [2020 yearly report, page 15](https://www.amac.org.cn/researchstatistics/publication/zgzqtzjjynb/202104/t20210419_11390.html), for market statistic
-- `Win.d` : classification/share/nav, for market statistic
+- `Win.d` : classification/share/nav, for market statistic; stock fund adjusted net asset value (2005/6-2019/6)
 
 **Data is sound, carefully verified and available to fetch**
 
@@ -43,7 +43,21 @@ $s_t$ denotes split ratio in month t
 
 ![market-value-weighted-fund-portfolio](image/README/market-value-weighted-fund-portfolio.png)
 
+### return description
+
+pass
+
 ## **Note**
+
+### aware weakpoint: fund split day
+
+pass
+
+### aware weakpoint: actively managed fund
+
+pass
+
+### more about formula
 
 if a fund payed dividend multiple times in one month, $Div_t=Div_{t,1}+Div_{t,2}+...$
 
@@ -51,29 +65,7 @@ if a fund was split multiple times in one month, $s_t=s_{t,1}×s_{t,2}×...$
 
 ## **Appendix**
 
-### market value statistic validation
-
-![sum-of-all-mixed-fund-market-value](image/README/sum-of-all-mixed-fund-market-value.png)
-
-![sum-of-all-stock-fund-market-value](image/README/sum-of-all-stock-fund-market-value.png)
-
-![sum-of-all-stock-fund-&&-mixed-fund-market-value](image/README/sum-of-all-stock-fund-&&-mixed-fund-market-value.png)
-
-### size effect in funds
-
-![cumulative-return-in-long-short-stock-funds-3-groups](image/README/cumulative-return-in-long-short-stock-funds-3-groups.png)
-
-long-short yield > 0, one-sided t test result
-
-`Ttest_1sampResult(statistic=-0.3712326871145363, pvalue=0.6445771294168032)`
-
-![cumulative-return-in-long-short-mixed-funds-3-groups](image/README/cumulative-return-in-long-short-mixed-funds-3-groups.png)
-
-long-short yield > 0, one-sided t test result
-
-`Ttest_1sampResult(statistic=-1.025866442813339, pvalue=0.8469542508537611)`
-
-### errata: seasonal report standard
+### errata: report standard
 
 *problem*: annual report or semi-annual report not available before 2008
 
@@ -98,3 +90,29 @@ long-short yield > 0, one-sided t test result
 ![full-market-non-NA-count](image/README/full-market-non-NA-count.png)
 
 ![full-market-non-NA-ratio](image/README/full-market-non-NA-ratio.png)
+
+### market value statistic verification
+
+![sum-of-all-mixed-fund-market-value](image/README/sum-of-all-mixed-fund-market-value.png)
+
+![sum-of-all-stock-fund-market-value](image/README/sum-of-all-stock-fund-market-value.png)
+
+![sum-of-all-stock-fund-&&-mixed-fund-market-value](image/README/sum-of-all-stock-fund-&&-mixed-fund-market-value.png)
+
+### size effect in funds
+
+![cumulative-return-in-long-short-stock-funds-3-groups](image/README/cumulative-return-in-long-short-stock-funds-3-groups.png)
+
+long-short yield > 0, one-sided t-test result
+
+`Ttest_1sampResult(statistic=-0.3712326871145363, pvalue=0.6445771294168032)`
+
+![cumulative-return-in-long-short-mixed-funds-3-groups](image/README/cumulative-return-in-long-short-mixed-funds-3-groups.png)
+
+long-short yield > 0, one-sided t-test result
+
+`Ttest_1sampResult(statistic=-1.025866442813339, pvalue=0.8469542508537611)`
+
+### all funds have positive return
+
+pass
