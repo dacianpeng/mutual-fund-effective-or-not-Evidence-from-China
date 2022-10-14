@@ -39,8 +39,6 @@ $s_t$ denotes split ratio in month t
 
 ### cumulative return
 
-![1-N-weighted-fund-portfolio](image/README/1-N-weighted-fund-portfolio.png)
-
 ![market-value-weighted-fund-portfolio](image/README/market-value-weighted-fund-portfolio.png)
 
 ### return description
@@ -49,13 +47,27 @@ pass
 
 ## **Note**
 
-### aware weakpoint: fund split day
+### weakness: fund split day
 
-pass
+condition 1: we do not have `Win.d` adjusted NAV
 
-### aware weakpoint: actively managed fund
+condition 2: adjusted NAV needs fund split ratio to calculate
 
-pass
+condition 3: fund split ratio is exclusively available in `CSMAR`
+
+condition 4: fund split ratio in `CSMAR` is sometimes one month ahead or lag than real split month
+
+check `fund split day.xlsx` for more detailed discuss
+
+solution 1: buy `Win.d` data
+
+solution 2: manually check all split day and correct the data
+
+### weakness: actively managed fund
+
+`JoinQuant` does not provide `active or not` signal
+
+here we did not strictly follow the paper, the funds we chosen have some passive funds in
 
 ### more about formula
 
@@ -89,9 +101,7 @@ if a fund was split multiple times in one month, $s_t=s_{t,1}×s_{t,2}×...$
 
 ![full-market-non-NA-count](image/README/full-market-non-NA-count.png)
 
-![full-market-non-NA-ratio](image/README/full-market-non-NA-ratio.png)
-
-### market value statistic verification
+### verification: market value statistic
 
 ![sum-of-all-mixed-fund-market-value](image/README/sum-of-all-mixed-fund-market-value.png)
 
@@ -115,4 +125,8 @@ long-short yield > 0, one-sided t-test result
 
 ### all funds have positive return
 
-pass
+2016-3, all stock fund have positive return. An error?
+
+double check `Win.d` stock fund adjusted NAV, and calculate 2016-3 return, it's an anomaly, not an error
+
+![all-funds-positive-return](image/README/all-funds-positive-return.png)
