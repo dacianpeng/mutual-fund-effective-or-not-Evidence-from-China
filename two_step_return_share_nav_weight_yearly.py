@@ -23,7 +23,6 @@ MONTH_OF_YEAR = 6
 
 csmar_share_info = csmar_share_info.drop_duplicates(subset=['Symbol', 'Date']).pivot(index='Date', columns='Symbol', values='EndDateShares')
 
-
 csmar_share_info_yearly = csmar_share_info[csmar_share_info.index.month == MONTH_OF_YEAR]
 csmar_nav_yearly = csmar_nav_monthly[csmar_nav_monthly.index.month == MONTH_OF_YEAR]
 
@@ -49,6 +48,7 @@ stock_fund_funds = return_of_csmar_stock_fund.unstack(level=0).columns
 
 stock_fund_new = np.setdiff1d(stock_fund_funds, csmar_stock_fund_weight_yearly.columns)
 print(f'{stock_fund_new} will not be used')
+
 stock_fund_funds = np.intersect1d(stock_fund_funds, csmar_stock_fund_weight_yearly.columns)
 
 csmar_stock_fund_weight_yearly = csmar_stock_fund_weight_yearly.loc[stock_fund_dates, stock_fund_funds]
@@ -78,3 +78,12 @@ pickle.dump(csmar_blend_fund_weight_yearly, open('data/TwoStepData/csmar_blend_f
 pickle.dump(return_of_csmar_stock_fund, open('data/TwoStepData/return_of_csmar_stock_fund.pkl', 'wb'))
 pickle.dump(return_of_csmar_blend_fund, open('data/TwoStepData/return_of_csmar_blend_fund.pkl', 'wb'))
 pickle.dump(return_of_all_fund, open('data/TwoStepData/return_of_all_fund.pkl', 'wb'))
+
+
+all_fund_weight = csmar_share_info_yearly * csmar_nav_yearly
+all_fund_weight = pd.concat([all_fund_weight, \
+    pd.DataFrame([[np.nan] * all_fund_weight.shape[1]], index=[pd.to_datetime('2023-06').to_period('M')], columns=all_fund_weight.columns)])
+all_fund_weight = all_fund_weight.resample('M').ffill()
+
+pickle.dump(all_fund_weight, open('data/TwoStepData/all_fund_weight.pkl', 'wb'))
+

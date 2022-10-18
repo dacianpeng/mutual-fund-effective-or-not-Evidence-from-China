@@ -8,6 +8,7 @@ from data.JoinQuant.jq_all_stocks_brief import jq_all_stocks_brief
 sys.path.append(os.getcwd())
 from utils.my_cache import cache_wrapper
 
+jq.auth('13764432461', 'Swisschina6')
 
 @cache_wrapper(expire = 60 * 60 * 24 * 7)
 def jq_industry(all_stocks):

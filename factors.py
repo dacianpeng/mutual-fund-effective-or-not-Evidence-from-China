@@ -6,18 +6,11 @@ import statsmodels.api as sm
 
 from utils.functions import *
 
+from data.TwoStepData.return_of_all_fund import return_of_all_fund
+from data.TwoStepData.all_fund_weight import all_fund_weight
+from data.TwoStepData.regression_source import regression_source
 
-
-
-
-ll_fund_weight = share_info_6 * nav_monthly_6
-all_fund_weight = pd.concat([all_fund_weight, \
-    pd.DataFrame([[np.nan] * all_fund_weight.shape[1]], index=[pd.to_datetime('2023-06').to_period('M')], columns=all_fund_weight.columns)])
-all_fund_weight = all_fund_weight.resample('M').ffill()
-
-return_of_all_fund_ = (return_of_all_fund.unstack(0) - 1).loc['2005-6': '2019-6']
-
-
+return_of_all_fund_ = (return_of_all_fund.unstack(0) - 1)
 
 
 
@@ -95,6 +88,5 @@ def α_na_ratio(x):
 
 MAX_NA_NUM = 35
 
-return_of_all_fund_na_ratio = return_of_all_fund_.rolling(window = 36, min_periods = 36 - MAX_NA_NUM).apply(α_na_ratio)
-return_of_all_fund_na_ratio
+# return_of_all_fund_na_ratio = return_of_all_fund_.rolling(window = 36, min_periods = 36 - MAX_NA_NUM).apply(α_na_ratio)
 

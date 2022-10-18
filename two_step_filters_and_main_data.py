@@ -72,6 +72,7 @@ main_data = main_data.groupby(level=0).fillna(method='ffill').fillna(False)
 main_data = main_data[main_data.filter_4].drop('filter_4', axis=1)
 
 print(f'in view of all time span, filter 4: {record_shape} to {len(main_data.index.get_level_values(0).unique())}')
+
 csmar_nav_monthly = pd.Series(csmar_nav_monthly.stack().swaplevel(), name='NAV')
 csmar_nav_monthly = pd.DataFrame(csmar_nav_monthly).reset_index()
 

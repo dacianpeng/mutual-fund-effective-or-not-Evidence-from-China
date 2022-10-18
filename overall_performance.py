@@ -9,10 +9,10 @@ from data.TwoStepData.csmar_blend_fund_weight_yearly import csmar_blend_fund_wei
 from data.TwoStepData.csmar_stock_fund_weight_yearly import csmar_stock_fund_weight_yearly
 from data.TwoStepData.return_of_csmar_blend_fund import return_of_csmar_blend_fund
 from data.TwoStepData.return_of_csmar_stock_fund import return_of_csmar_stock_fund
+from data.TwoStepData.regression_source import regression_source
 from utils.functions import *
 
 plt.figure(figsize=(24,8))
-
 
 (((return_of_csmar_stock_fund.unstack(level=0) - 1) * csmar_stock_fund_weight_yearly).sum(axis=1) + 1).loc['2005-6':].cumprod().plot(label='Stock Fund Cumulative Return')
 (((return_of_csmar_blend_fund.unstack(level=0) - 1) * csmar_blend_fund_weight_yearly).sum(axis=1) + 1).loc['2005-6':].cumprod().plot(label='Blend Fund Cumulative Return')
@@ -24,20 +24,6 @@ plt.grid()
 plt.legend()
 plt.show()
 
-
-stock_fund_regression = ((return_of_csmar_stock_fund.unstack(level=0) - 1) * csmar_stock_fund_weight_yearly).sum(axis=1)
-stock_fund_regression.name = 'stock_fund'
-
-blend_fund_regression = ((return_of_csmar_blend_fund.unstack(level=0) - 1) * csmar_blend_fund_weight_yearly).sum(axis=1)
-blend_fund_regression.name = 'blend_fund'
-
-
-regression_source = pd.merge(stock_fund_regression, svc_source[['mktrf', 'rf', 'smb', 'vmg']], on='Date')
-regression_source = pd.merge(regression_source, blend_fund_regression, on='Date')
-
-regression_source['α'] = 1
-
-regression_source = regression_source.loc['2005/6':]
 
 print()
 

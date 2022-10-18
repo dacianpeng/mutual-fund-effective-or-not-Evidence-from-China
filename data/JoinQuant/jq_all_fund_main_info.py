@@ -1,4 +1,3 @@
-from data.JoinQuant.jq_all_fund_brief import *
 from utils.my_cache import cache_wrapper
 import math
 import os
@@ -9,6 +8,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.append(os.getcwd())
+from data.JoinQuant.jq_all_fund_brief import *
 
 
 jq.auth('13764432461', 'Swisschina6')
