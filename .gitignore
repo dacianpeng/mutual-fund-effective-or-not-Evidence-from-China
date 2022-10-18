@@ -1,13 +1,18 @@
 data/AMAC/*
 data/CSMAR/*
 data/SVC/*
-data/Win.d/*
+data/Wind/*
+data/IDV/*
+data/JointQuant/*
+data/TwoStepData/*
+
 cache/*
 *cache*
 *.log
 token.txt
 test*
+*.pkl
 
-!my_cache.py
 !README.md
 !.gitkeep
+!*.py
