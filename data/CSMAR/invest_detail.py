@@ -17,4 +17,8 @@ aboard_stock_filter = csmar_invest_detail.Stkcd.apply(aboard_stock)
 invest_detail = csmar_invest_detail[~ aboard_stock_filter]
 invest_detail = pd.merge(invest_detail, csmar_symbol_code_mapping.groupby('MasterFundCode').last(), on='MasterFundCode', how='left', validate='m:1')
 invest_detail['Stkcd'] = invest_detail.Stkcd.astype(int)
-invest_detail = invest_detail[['Symbol', 'EndDate', 'Stkcd', 'Proportion']].groupby(['Symbol', 'EndDate', 'Stkcd']).last().reset_index()
+invest_detail = invest_detail[['Symbol', 'EndDate', 'Stkcd', 'Proportion']]
+
+invest_detail = invest_detail.rename(columns={'EndDate': 'Date'})
+invest_detail['Date'] = pd.to_datetime(invest_detail.Date).dt.to_period('M')
+invest_detail = invest_detail.drop_duplicates(['Symbol', 'Date', 'Stkcd'])
