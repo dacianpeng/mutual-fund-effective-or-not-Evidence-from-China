@@ -91,3 +91,6 @@ csmar_category_symbol_mapping = csmar_category_symbol_mapping.groupby('Symbol').
 
 main_data = pd.merge(main_data.reset_index(), csmar_category_symbol_mapping, on='Symbol').set_index(['Symbol', 'Date'])
 main_data.to_pickle(open('data/TwoStepData/main_data.pkl', 'wb'))
+
+filtered_funds = pd.notna(main_data.NAV.unstack()).T
+filtered_funds.to_pickle(open('data/TwoStepData/filtered_funds.pkl', 'wb'))

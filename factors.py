@@ -13,8 +13,16 @@ from data.TwoStepData.regression_source import regression_source
 return_of_all_fund_ = (return_of_all_fund.unstack(0) - 1)
 
 
+def group_and_statistic(α_matrix, groups = 5, weighting = 'mkt'):
+    '''
+    weighting : string
 
-def group_and_statistic(α_matrix, groups = 5):
+    mkt, market value weighted
+
+    1/n, equal weighted
+    '''
+
+    α_matrix = α_matrix.resample('M').ffill().dropna(how='all', axis=0)
 
     grouped_all_fund_α_matrix = α_matrix.apply(lambda x: \
         pd.qcut(x, groups, labels=np.arange(groups)) if pd.notna(x).sum() >= groups else pd.Series([np.nan] * len(x), x.index), axis=1).dropna(how='all')
@@ -25,9 +33,14 @@ def group_and_statistic(α_matrix, groups = 5):
         return_look_forward = return_of_all_fund_.shift(-1)
         ret = return_look_forward.loc[date]
 
-        result = pd.DataFrame([x, ret, weight], index=['rank', 'ret', 'weight']).T.dropna(subset='rank').sort_values(by='rank')
-        result['weight'] = result.groupby('rank').apply(lambda y: y.weight / y.weight.sum()).values
-        result = result.groupby('rank').apply(lambda y: (y.ret * y.weight).sum())
+        result = pd.DataFrame([x, ret, weight], index=['rank', 'ret', 'weight']).T.dropna().set_index('rank', append=True).swaplevel().sort_index()
+
+        if weighting == 'mkt':
+            result['weight'] = result.groupby(level=0).apply(lambda y: y.weight / y.weight.sum()).values
+        elif weighting == '1/n':
+            result['weight'] = [groups / len(result.index.levels[1])] * len(result.index.levels[1])
+
+        result = result.groupby(level=0).apply(lambda y: (y.ret * y.weight).sum())
         return result
 
     grouped_all_fund_α_matrix_return = grouped_all_fund_α_matrix.apply(func, axis=1)
@@ -36,7 +49,7 @@ def group_and_statistic(α_matrix, groups = 5):
     # RS denotes regression source
     RS_α = pd.merge(grouped_all_fund_α_matrix_return, regression_source, on='Date')
     RS_α[['stock_fund', 'mktrf', 'rf', 'smb', 'vmg', 'blend_fund']] = RS_α[['stock_fund', 'mktrf', 'rf', 'smb', 'vmg', 'blend_fund']].shift(-1)
-    RS_α = RS_α.iloc[:-1]
+    RS_α = RS_α.iloc[:-1].interpolate()
 
     regressors = [
         ['α'],
