@@ -4,20 +4,24 @@ import numpy as np
 import pandas as pd
 from data.CSMAR.Fund_ShareChange import csmar_share_info
 from data.JoinQuant.jq_all_fund_main_info import jq_all_fund_main_info
-from data.TwoStepData.main_data import main_data
+from data.TwoStepData.main_data_raw import main_data
 from data.TwoStepData.csmar_nav_monthly import csmar_nav_monthly
 
 from utils.functions import *
 
 main_data['NAV_shift'] = main_data.groupby(level=0).apply(lambda x: x.NAV.shift(1)).droplevel(0)
+main_data['adj_factor'] = main_data.groupby(level=0).apply(lambda x: (x.SplitRatio * x.NAV_shift / (x.NAV_shift - x.DividendperShare)).cumprod()).droplevel(0)
+main_data['adj_NAV'] = main_data.NAV * main_data.adj_factor
 
 blend_data = main_data[main_data.underlying_asset_type == '混合型']
 stock_data = main_data[main_data.underlying_asset_type == '股票型']
 
-
-return_of_csmar_stock_fund = stock_data.groupby(level=0).apply(lambda x: ((x.NAV + x.DividendperShare) * x.SplitRatio) / x.NAV_shift).droplevel(0)
-return_of_csmar_blend_fund = blend_data.groupby(level=0).apply(lambda x: ((x.NAV + x.DividendperShare) * x.SplitRatio) / x.NAV_shift).droplevel(0)
-return_of_all_fund = main_data.groupby(level=0).apply(lambda x: ((x.NAV + x.DividendperShare) * x.SplitRatio) / x.NAV_shift).droplevel(0)
+return_of_csmar_stock_fund = stock_data.adj_NAV.groupby(level=0).apply(lambda x: x.pct_change())
+return_of_csmar_stock_fund.name = 'return_of_csmar_stock_fund'
+return_of_csmar_blend_fund = blend_data.adj_NAV.groupby(level=0).apply(lambda x: x.pct_change())
+return_of_csmar_blend_fund.name = 'return_of_csmar_blend_fund'
+return_of_all_fund = main_data.adj_NAV.groupby(level=0).apply(lambda x: x.pct_change())
+return_of_all_fund.name = 'return_of_all_fund'
 
 MONTH_OF_YEAR = 6
 
@@ -75,6 +79,7 @@ pickle.dump(csmar_share_info_yearly, open('data/TwoStepData/csmar_share_info_yea
 pickle.dump(csmar_nav_yearly, open('data/TwoStepData/csmar_nav_yearly.pkl', 'wb'))
 pickle.dump(csmar_stock_fund_weight_yearly, open('data/TwoStepData/csmar_stock_fund_weight_yearly.pkl', 'wb'))
 pickle.dump(csmar_blend_fund_weight_yearly, open('data/TwoStepData/csmar_blend_fund_weight_yearly.pkl', 'wb'))
+pickle.dump(main_data, open('data/TwoStepData/main_data.pkl', 'wb'))
 pickle.dump(return_of_csmar_stock_fund, open('data/TwoStepData/return_of_csmar_stock_fund.pkl', 'wb'))
 pickle.dump(return_of_csmar_blend_fund, open('data/TwoStepData/return_of_csmar_blend_fund.pkl', 'wb'))
 pickle.dump(return_of_all_fund, open('data/TwoStepData/return_of_all_fund.pkl', 'wb'))

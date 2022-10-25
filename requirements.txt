@@ -1,11 +1,11 @@
-diskcache
-dask
-jqdatasdk
-matplotlib
-numpy
-pandas
-plotly
-statsmodels
-scipy
-# note, csmarapi can only be installed manually
-# https://cn.gtadata.com/static/packages/domestic/Python/csmarapi.rar
+sklearn
+requests
+seaborn
+django
+gunicorn
+wordcloud
+xlwt
+pandas_ta
+websocket
+prettytable
+websocket_client

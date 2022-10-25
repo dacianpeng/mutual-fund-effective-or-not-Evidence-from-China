@@ -1,0 +1,37 @@
+sklearn
+requests
+seaborn
+django
+gunicorn
+wordcloud
+xlwt
+pandas_ta
+websocket
+prettytable
+websocket_client
+urllib3
+openpyxl
+nbformat
+unidecode
+selenium
+jupyter
+xlrd
+beautifulsoup4
+tushare
+jieba
+ipykernel
+tqdm
+pyftpdlib
+backtrader
+sqlalchemy
+akshare
+pymysql
+redis
+distributed
+bokeh
+cryptography
+clickhouse-driver
+# tensorflow
+# torch
+# opencv-python-headless
+# -i https://pypi.mirrors.ustc.edu.cn/simple

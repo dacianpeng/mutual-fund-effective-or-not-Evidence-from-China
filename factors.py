@@ -63,19 +63,19 @@ def group_and_statistic(α_matrix, groups = 5, weighting = 'mkt'):
 
         for group in range(groups):
             temp = sm.OLS(RS_α[group] - RS_α.rf, RS_α[regressor]).fit()
-            results.append([float_to_percent(temp.params[0]), yearly_return(temp), temp.tvalues[0].round(3), temp.rsquared.round(3)])
+            results.append([float_to_percent(temp.params[0]), yearly_return(temp), temp.tvalues[0].round(3), temp.rsquared.round(3), int(temp.nobs)])
         # remove r_f
         temp = sm.OLS(RS_α[groups - 1] - RS_α[0], RS_α[regressor]).fit()
-        results.append([float_to_percent(temp.params[0]), yearly_return(temp), temp.tvalues[0].round(3), temp.rsquared.round(3)])
+        results.append([float_to_percent(temp.params[0]), yearly_return(temp), temp.tvalues[0].round(3), temp.rsquared.round(3), int(temp.nobs)])
 
     excess_result, capm_α_result, svc_α_result = results[0: groups + 1], results[groups + 1: 2 * groups + 2], results[2 * groups + 2: 3 * groups + 3]
 
     excess_result = pd.DataFrame(np.array(excess_result).T, \
-        index=pd.MultiIndex.from_product([['excess'], ['α (monthly)', 'annual α', 't', 'R^2']]), columns=['group' + str(i) for i in range(groups)] + ['long-short'])
+        index=pd.MultiIndex.from_product([['excess'], ['α (monthly)', 'annual α', 't', 'R^2', 'Obs']]), columns=['group' + str(i) for i in range(groups)] + ['long-short'])
     capm_α_result = pd.DataFrame(np.array(capm_α_result).T, \
-        index=pd.MultiIndex.from_product([['capm α'], ['α (monthly)', 'annual α', 't', 'R^2']]), columns=['group' + str(i) for i in range(groups)] + ['long-short'])
+        index=pd.MultiIndex.from_product([['capm α'], ['α (monthly)', 'annual α', 't', 'R^2', 'Obs']]), columns=['group' + str(i) for i in range(groups)] + ['long-short'])
     svc_α_result = pd.DataFrame(np.array(svc_α_result).T, \
-        index=pd.MultiIndex.from_product([['svc α'], ['α (monthly)', 'annual α', 't', 'R^2']]), columns=['group' + str(i) for i in range(groups)] + ['long-short'])
+        index=pd.MultiIndex.from_product([['svc α'], ['α (monthly)', 'annual α', 't', 'R^2', 'Obs']]), columns=['group' + str(i) for i in range(groups)] + ['long-short'])
 
     return pd.concat([excess_result, capm_α_result, svc_α_result])
 
