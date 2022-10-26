@@ -84,12 +84,13 @@ main_data['NAV'] = main_data.groupby(level=0).apply(lambda x: x.NAV.fillna(metho
 main_data['DividendperShare'] = main_data.DividendperShare.fillna(0)
 main_data['SplitRatio'] = main_data.SplitRatio.fillna(1)
 
-csmar_category_symbol_mapping = pd.merge(csmar_maininfo[['MasterFundCode', 'Category']].drop_duplicates(), \
-    csmar_symbol_code_mapping, on='MasterFundCode', how='left')[['Category', 'Symbol']]
-csmar_category_symbol_mapping = csmar_category_symbol_mapping.drop_duplicates().reset_index(drop=True)
-csmar_category_symbol_mapping = csmar_category_symbol_mapping.groupby('Symbol').last()
+# csmar_category_symbol_mapping = pd.merge(csmar_maininfo[['MasterFundCode', 'Category']].drop_duplicates(), \
+#     csmar_symbol_code_mapping, on='MasterFundCode', how='left')[['Category', 'Symbol']]
+# csmar_category_symbol_mapping = csmar_category_symbol_mapping.drop_duplicates().reset_index(drop=True)
+# csmar_category_symbol_mapping = csmar_category_symbol_mapping.groupby('Symbol').last()
 
-main_data = pd.merge(main_data.reset_index(), csmar_category_symbol_mapping, on='Symbol').set_index(['Symbol', 'Date'])
+# main_data = pd.merge(main_data.reset_index(), csmar_category_symbol_mapping, on='Symbol').set_index(['Symbol', 'Date'])
+
 main_data.to_pickle(open('data/TwoStepData/main_data_raw.pkl', 'wb'))
 
 filtered_funds = pd.notna(main_data.NAV.unstack()).T
