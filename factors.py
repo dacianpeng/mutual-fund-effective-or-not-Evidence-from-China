@@ -34,7 +34,7 @@ def group_and_statistic(α_matrix, groups = 5, weighting = 'mkt', interval = 1):
         pd.qcut(x, groups, labels=np.arange(groups)) if pd.notna(x).sum() >= groups else pd.Series([np.nan] * len(x), x.index), axis=1).dropna(how='all')
 
     adj_NAV = main_data.adj_NAV.unstack().T
-    return_look_forward = adj_NAV.pct_change(interval).shift(- interval)
+    return_look_forward = adj_NAV.pct_change(1).shift(-1)
 
     def func(x):
         date = x.name
@@ -50,7 +50,7 @@ def group_and_statistic(α_matrix, groups = 5, weighting = 'mkt', interval = 1):
         result = result.groupby(level=0).apply(lambda y: (y.ret * y.weight).sum())
         return result
 
-    grouped_all_fund_α_matrix_return = grouped_all_fund_α_matrix.apply(lambda x: func(x), axis=1)
+    grouped_all_fund_α_matrix_return = grouped_all_fund_α_matrix.resample('M').ffill().apply(lambda x: func(x), axis=1)
 
     RS_α = pd.merge(grouped_all_fund_α_matrix_return, regression_source, on='Date')
     RS_α[['stock_fund', 'mktrf', 'rf', 'smb', 'vmg', 'blend_fund']] = RS_α[['stock_fund', 'mktrf', 'rf', 'smb', 'vmg', 'blend_fund']].shift(-1)
