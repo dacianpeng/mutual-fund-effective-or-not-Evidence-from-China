@@ -68,13 +68,13 @@ def group_and_statistic(α_matrix, groups = 5, weighting = 'mkt', interval = 1):
 
         for group in range(groups):
             temp = sm.OLS(RS_α[group] - RS_α.rf, RS_α[regressor]).fit()
-            α = temp.params[0]
-            monthly_α = ((α + 1) ** (1 / interval)) - 1
+            monthly_α = temp.params[0]
+            # monthly_α = ((α + 1) ** (1 / interval)) - 1
             results.append([float_to_percent(monthly_α), yearly_return(monthly_α), temp.tvalues[0].round(3), temp.rsquared.round(3), int(temp.nobs)])
         # remove r_f
         temp = sm.OLS(RS_α[groups - 1] - RS_α[0], RS_α[regressor]).fit()
-        α = temp.params[0]
-        monthly_α = ((α + 1) ** (1 / interval)) - 1
+        monthly_α = temp.params[0]
+        # monthly_α = ((α + 1) ** (1 / interval)) - 1
         results.append([float_to_percent(monthly_α), yearly_return(monthly_α), temp.tvalues[0].round(3), temp.rsquared.round(3), int(temp.nobs)])
 
     excess_result, capm_α_result, svc_α_result = results[0: groups + 1], results[groups + 1: 2 * groups + 2], results[2 * groups + 2: 3 * groups + 3]
@@ -87,6 +87,7 @@ def group_and_statistic(α_matrix, groups = 5, weighting = 'mkt', interval = 1):
         index=pd.MultiIndex.from_product([['svc α'], ['α (monthly)', 'annual α', 't', 'R^2', 'Obs']]), columns=['group' + str(i) for i in range(groups)] + ['long-short'])
 
     return pd.concat([excess_result, capm_α_result, svc_α_result])
+
 
 
 def fund_ended_check(α_operation):
