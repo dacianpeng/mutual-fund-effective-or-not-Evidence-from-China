@@ -11,5 +11,6 @@ co_index = np.intersect1d(invest_detail.set_index(['Date', 'Symbol']).index, fil
 invest_detail = invest_detail.set_index(['Date', 'Symbol']).loc[co_index]
 invest_detail = invest_detail.reset_index()
 invest_detail['Symbol'] = invest_detail.Symbol.astype(int).astype(str)
+invest_detail = invest_detail.drop_duplicates(['Symbol', 'Date', 'Stkcd'])
 
 invest_detail.to_pickle(open('data/TwoStepData/invest_detail.pkl', 'wb'))

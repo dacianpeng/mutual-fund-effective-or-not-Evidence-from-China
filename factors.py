@@ -27,7 +27,7 @@ def group_and_statistic(α_matrix, groups = 5, weighting = 'mkt', interval = 1):
     the frequency to change holdings
     '''
 
-    α_matrix = α_matrix.resample(f'{interval}M').ffill().dropna(how='all', axis=0)
+    α_matrix = α_matrix.resample(f'{interval}M').ffill().dropna(how='all', axis=0).iloc[: -1]
     α_matrix.index = α_matrix.index.astype(np.datetime64).to_period('M')
 
     grouped_all_fund_α_matrix = α_matrix.apply(lambda x: \

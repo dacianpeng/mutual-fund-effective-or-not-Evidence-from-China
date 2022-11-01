@@ -1,14 +1,14 @@
-
 from functools import reduce
 
 import numpy as np
 import pandas as pd
+import datetime
 
 from data.CSMAR.daily_nav import csmar_nav_daily
 from data.CSMAR.Fund_Allocation import csmar_fund_allocation
 from data.CSMAR.FUND_FundCodeInfo import csmar_symbol_code_mapping
 from data.CSMAR.Fund_FundDividend import csmar_fund_dividend
-from data.CSMAR.FUND_MainInfo import csmar_maininfo
+# from data.CSMAR.FUND_MainInfo import csmar_maininfo
 from data.CSMAR.Fund_Resolution import csmar_fund_resolution
 from data.JoinQuant.jq_all_fund_main_info import jq_all_fund_main_info
 from data.TwoStepData.csmar_nav_monthly import csmar_nav_monthly
@@ -41,7 +41,7 @@ filters_ = reduce(func, filters)
 final_main_info = final_main_info[filters_]
 
 
-indexes = pd.MultiIndex.from_product([final_main_info.main_code.sort_values().values, pd.date_range('2000-1', '2022-10', freq='M')])
+indexes = pd.MultiIndex.from_product([final_main_info.main_code.sort_values().values, pd.date_range('2000-1', (datetime.datetime.now() + pd.offsets.MonthEnd(1)).strftime('%Y-%m'), freq='M')])
 temp_codes = indexes.get_level_values(0)
 temp_date = indexes.get_level_values(1)
 main_data = pd.DataFrame(index=indexes)

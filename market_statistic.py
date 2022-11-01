@@ -1,4 +1,3 @@
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -7,18 +6,16 @@ from data.CSMAR.Fund_ShareChange import csmar_share_info
 from data.JoinQuant.jq_all_fund_main_info import jq_all_fund_main_info
 from data.TwoStepData.csmar_nav_monthly import csmar_nav_monthly
 from data.Wind.wind_validate_share_nav import *
+from data.AMAC.amac_full_market_value import amac_full_market_value
 from utils.functions import *
+
 
 wind_validate_share = wind_validate_share_nav.loc['基金份额', slice(None)]
 wind_validate_share.columns = wind_validate_share.columns.str.split('.').str[0]
 wind_validate_share = wind_validate_share[ ~ wind_validate_share.index.duplicated(keep='last')]
-
-
 wind_validate_nav = wind_validate_share_nav.loc['单位净值', slice(None)]
 wind_validate_nav.columns = wind_validate_nav.columns.str.split('.').str[0]
 wind_validate_nav = wind_validate_nav[ ~ wind_validate_nav.index.duplicated(keep='last')]
-
-
 wind_stock_fund_share = wind_validate_share.T[(wind_fund_classification['投资类型(一级分类)'] == '股票型基金').values].T
 wind_blend_fund_share = wind_validate_share.T[(wind_fund_classification['投资类型(一级分类)'] == '混合型基金').values].T
 
@@ -41,7 +38,6 @@ wind_blend_fund_mkt_value.index  = wind_blend_fund_mkt_value.index.astype(np.dat
 
 csmar_share_info = csmar_share_info.drop_duplicates(subset=['Symbol', 'Date']).pivot(index='Date', columns='Symbol', values='EndDateShares')
 
-
 selected_month = 6
 
 csmar_share_info_6 = csmar_share_info[csmar_share_info.index.month == selected_month]
@@ -55,11 +51,55 @@ csmar_stock_code_6 = np.intersect1d(csmar_stock_code_6, csmar_share_info_6.colum
 
 csmar_co_time_6 = np.intersect1d(csmar_share_info_6.index, csmar_nav_monthly_6.index)
 
+
+
 csmar_blend_mkt_value_jq_classify = (csmar_share_info_6.loc[csmar_co_time_6, csmar_blend_code_6] * csmar_nav_monthly_6.loc[csmar_co_time_6, csmar_blend_code_6]).sum(axis=1)
 csmar_stock_mkt_value_jq_classify = (csmar_share_info_6.loc[csmar_co_time_6, csmar_stock_code_6] * csmar_nav_monthly_6.loc[csmar_co_time_6, csmar_stock_code_6]).sum(axis=1)
 
 csmar_stock_mkt_value_jq_classify.index = csmar_stock_mkt_value_jq_classify.index.astype(np.datetime64) + pd.offsets.MonthEnd(0)
 csmar_blend_mkt_value_jq_classify.index = csmar_blend_mkt_value_jq_classify.index.astype(np.datetime64) + pd.offsets.MonthEnd(0)
+
+
+plt.figure(figsize=(24, 6))
+plt.bar(amac_full_market_value.股票基金.index - pd.Timedelta('10W'), amac_full_market_value.股票基金.values * 1e8, width=75, label='AMAC Source', alpha=.8)
+plt.bar(wind_stock_fund_mkt_value.index - pd.Timedelta('1W'), wind_stock_fund_mkt_value.values, width=75, label='Win.d Source', alpha=.8)
+plt.bar(csmar_stock_mkt_value_jq_classify.index + pd.Timedelta('8W'), csmar_stock_mkt_value_jq_classify.values, width=75, label='CSMAR Fund & JoinQuant Classification', alpha=.8)
+plt.grid()
+plt.ylabel('Total Market Value (Share × NAV)')
+plt.title('Sum of Stock Fund Market Value, Every 6th Month')
+plt.legend()
+plt.show()
+
+
+plt.figure(figsize=(24, 6))
+plt.bar(amac_full_market_value.混合基金.index - pd.Timedelta('10W'), amac_full_market_value.混合基金.values * 1e8, width=75, label='AMAC Source', alpha=.8)
+plt.bar(wind_blend_fund_mkt_value.index - pd.Timedelta('1W'), wind_blend_fund_mkt_value.values, width=75, label='Win.d Source', alpha=.8)
+plt.bar(csmar_blend_mkt_value_jq_classify.index + pd.Timedelta('8W'), csmar_blend_mkt_value_jq_classify.values, width=75, label='CSMAR Fund & JoinQuant Classification', alpha=.8)
+plt.grid()
+plt.ylabel('Total Market Value (Share × NAV)')
+plt.title('Sum of Blend Fund Market Value, End of Every 6th Month')
+plt.legend()
+plt.show()
+
+
+plt.figure(figsize=(24, 6))
+plt.bar(amac_full_market_value.混合基金.index - pd.Timedelta('10W'), (amac_full_market_value.混合基金.values + amac_full_market_value.股票基金.values) * 1e8, width=75, label='AMAC Source', alpha=.8)
+plt.bar(wind_blend_fund_mkt_value.index - pd.Timedelta('1W'), \
+     wind_blend_fund_mkt_value.values + wind_stock_fund_mkt_value.values, width=75, label='Win.d Source', alpha=.8)
+plt.bar(csmar_blend_mkt_value_jq_classify.index + pd.Timedelta('8W'), \
+     csmar_blend_mkt_value_jq_classify.values + csmar_stock_mkt_value_jq_classify.values, width=75, label='CSMAR Fund & JoinQuant Classification', alpha=.8)
+plt.grid()
+plt.ylabel('Total Market Value (Share × NAV)')
+plt.title('Sum of Stock Fund && Blend Fund Market Value, End of Every 6th month')
+plt.legend()
+plt.show()
+
+
+csmar_stock_fund_count = csmar_nav_monthly.loc[:, csmar_stock_code_6].apply(lambda x: pd.notna(x).sum(), axis=1)
+csmar_stock_fund_count.index = csmar_stock_fund_count.index.astype(np.datetime64) + pd.offsets.MonthEnd(0)
+
+csmar_blend_fund_count = csmar_nav_monthly.loc[:, csmar_blend_code_6].apply(lambda x: pd.notna(x).sum(), axis=1)
+csmar_blend_fund_count.index = csmar_blend_fund_count.index.astype(np.datetime64) + pd.offsets.MonthEnd(0)
 
 
 fig, ax1 = plt.subplots()

@@ -1,11 +1,14 @@
-sklearn
-requests
-seaborn
-django
-gunicorn
-wordcloud
-xlwt
-pandas_ta
-websocket
-prettytable
-websocket_client
+
+pandarallel
+
+dask
+distributed
+bokeh
+jqdatasdk
+matplotlib
+numpy
+pandas
+plotly
+# statsmodels
+
+scipy
