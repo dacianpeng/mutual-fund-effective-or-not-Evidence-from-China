@@ -12,6 +12,7 @@ cache/*
 token.txt
 test*
 *.pkl
+*.xlsx
 
 !README.md
 !.gitkeep
