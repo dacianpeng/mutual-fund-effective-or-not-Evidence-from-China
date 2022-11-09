@@ -5,6 +5,7 @@ import pandas as pd
 import statsmodels.api as sm
 
 from utils.functions import *
+from utils.my_cache import cache_wrapper
 
 from data.TwoStepData.return_of_all_fund import return_of_all_fund
 from data.TwoStepData.all_fund_weight import all_fund_weight
@@ -13,8 +14,8 @@ from data.TwoStepData.main_data import main_data
 
 return_of_all_fund_ = return_of_all_fund.unstack(0)
 
-
-def group_and_statistic(α_matrix, groups = 5, weighting = 'mkt', interval = 1, kind = 'cross_section', time_span = 24):
+@cache_wrapper(expire = 60 * 60 * 24 * 30)
+def group_and_statistic(α_matrix, groups = 5, weighting = 'mkt', interval = 1, kind = 'all_time_span', time_span = 24):
     '''
     `weighting` : string
     
@@ -76,7 +77,7 @@ def group_and_statistic(α_matrix, groups = 5, weighting = 'mkt', interval = 1, 
         
     results = []
 
-    if kind == 'cross_section':
+    if kind == 'all_time_span':
         for regressor in regressors:
 
             for group in range(groups):
@@ -91,7 +92,7 @@ def group_and_statistic(α_matrix, groups = 5, weighting = 'mkt', interval = 1, 
         excess_result, capm_α_result, svc_α_result = results[0: groups + 1], results[groups + 1: 2 * groups + 2], results[2 * groups + 2: 3 * groups + 3]
         columns = ['group' + str(i) for i in range(groups)] + ['long-short']
 
-    elif kind == 'time_series_fm':
+    elif kind == 'time_series_subsample':
 
         for regressor in regressors:
             for one_time_span in np.array_split(RS_α.index, len(RS_α.index) // time_span):

@@ -36,4 +36,5 @@ def add_filter(x):
         return x
 
 
-not_tradable = pur_red.apply(add_filter)
+not_tradable = pur_red.apply(add_filter).replace(1, True)
+tradable = not_tradable.replace(True, False).fillna(True).replace(False, np.nan)
