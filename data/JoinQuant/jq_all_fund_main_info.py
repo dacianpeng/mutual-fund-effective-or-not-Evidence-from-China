@@ -30,5 +30,6 @@ def main_info(fund_codes) -> pd.DataFrame:
     return full_table
 
 
-jq_all_fund_main_info = main_info(jq_all_fund_code)[
-    ['main_code', 'underlying_asset_type', 'operate_mode', 'start_date']]
+temp = main_info(jq_all_fund_code)[~ np.logical_and(main_info(jq_all_fund_code).name.apply(lambda x: 'C' != x[-1]), main_info(
+    jq_all_fund_code).name.str.strip('C').str.strip('A').duplicated(keep=False))]
+jq_all_fund_main_info = temp[['main_code', 'underlying_asset_type', 'operate_mode', 'start_date']]

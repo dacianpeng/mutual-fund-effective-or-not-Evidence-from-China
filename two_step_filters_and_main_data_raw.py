@@ -20,7 +20,7 @@ final_main_info = pd.merge(jq_all_fund_main_info, csmar_jq_co_fund, on='main_cod
 
 
 filter_1 = np.logical_or(final_main_info.underlying_asset_type == '股票型', final_main_info.underlying_asset_type == '混合型')
-filter_2 = np.logical_and(final_main_info.operate_mode != 'ETF', final_main_info.operate_mode != 'QDII')
+filter_2 = final_main_info.operate_mode == '开放式基金'
 
 filters = [(1, filter_1), (2, filter_2)]
 

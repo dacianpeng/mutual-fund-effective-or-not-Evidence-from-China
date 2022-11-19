@@ -14,7 +14,7 @@ stock_fund_regression.name = 'stock_fund'
 blend_fund_regression = (return_of_csmar_blend_fund.unstack(level=0) * csmar_blend_fund_weight_yearly).sum(axis=1)
 blend_fund_regression.name = 'blend_fund'
 
-
+svc_source.index.name = 'Date'
 regression_source = pd.merge(stock_fund_regression, svc_source[['mktrf', 'rf', 'smb', 'vmg']], on='Date').sort_index()
 regression_source = pd.merge(regression_source, blend_fund_regression, on='Date')
 
