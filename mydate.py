@@ -1,0 +1,51 @@
+from datetime import datetime
+from datetime import timedelta
+from pandas import offsets
+
+day_today = datetime.today().strftime('%Y-%m-%d')
+day_yesterday = (datetime.today() - timedelta(1)).strftime('%Y-%m-%d')
+day_last_month_end = (datetime.today() + offsets.MonthEnd(-1)).strftime('%Y-%m-%d')
+day_this_month_begin = (datetime.today() + offsets.MonthBegin(-1)).strftime('%Y-%m-%d')
+day_this_month_end = (datetime.today() + offsets.MonthEnd(0)).strftime('%Y-%m-%d')
+day_last_quarter_end = (datetime.today() + offsets.QuarterEnd(-1)).strftime('%Y-%m-%d')
+day_this_quarter_end = (datetime.today() + offsets.QuarterEnd(0)).strftime('%Y-%m-%d')
+
+b_day_today = (datetime.today() + offsets.BusinessDay(0)).strftime('%Y-%m-%d')
+b_day_yesterday = (datetime.today() - offsets.BusinessDay(1)).strftime('%Y-%m-%d')
+b_day_last_month_end = (datetime.today() + offsets.BMonthEnd(-1)).strftime('%Y-%m-%d')
+b_day_this_month_begin = (datetime.today() + offsets.BMonthBegin(-1)).strftime('%Y-%m-%d')
+b_day_this_month_end = (datetime.today() + offsets.BMonthEnd(0)).strftime('%Y-%m-%d')
+b_day_last_quarter_end = (datetime.today() + offsets.BQuarterEnd(-1)).strftime('%Y-%m-%d')
+b_day_this_quarter_end = (datetime.today() + offsets.BQuarterEnd(0)).strftime('%Y-%m-%d')
+
+month_today = datetime.today().strftime('%Y-%m')
+month_yesterday = (datetime.today() - timedelta(1)).strftime('%Y-%m')
+month_last_month_end = (datetime.today() + offsets.MonthEnd(-1)).strftime('%Y-%m')
+month_this_month_begin = (datetime.today() + offsets.MonthBegin(-1)).strftime('%Y-%m')
+month_this_month_end = (datetime.today() + offsets.MonthEnd(0)).strftime('%Y-%m')
+month_last_quarter_end = (datetime.today() + offsets.QuarterEnd(-1)).strftime('%Y-%m')
+month_this_quarter_end = (datetime.today() + offsets.QuarterEnd(0)).strftime('%Y-%m')
+
+b_month_today = (datetime.today() + offsets.BusinessDay(0)).strftime('%Y-%m')
+b_month_yesterday = (datetime.today() - offsets.BusinessDay(1)).strftime('%Y-%m')
+b_month_last_month_end = (datetime.today() + offsets.BMonthEnd(-1)).strftime('%Y-%m')
+b_month_this_month_begin = (datetime.today() + offsets.BMonthBegin(-1)).strftime('%Y-%m')
+b_month_this_month_end = (datetime.today() + offsets.BMonthEnd(0)).strftime('%Y-%m')
+b_month_last_quarter_end = (datetime.today() + offsets.BQuarterEnd(-1)).strftime('%Y-%m')
+b_month_this_quarter_end = (datetime.today() + offsets.BQuarterEnd(0)).strftime('%Y-%m')
+
+date_today = datetime.today()
+date_yesterday = datetime.today() - timedelta(1)
+date_last_month_end = datetime.today() + offsets.MonthEnd(-1)
+date_this_month_begin = datetime.today() + offsets.MonthBegin(-1)
+date_this_month_end = datetime.today() + offsets.MonthEnd(0)
+date_last_quarter_end = datetime.today() + offsets.QuarterEnd(-1)
+date_this_quarter_end = datetime.today() + offsets.QuarterEnd(0)
+
+b_date_today = datetime.today() + offsets.BusinessDay(0)
+b_date_yesterday = datetime.today() - offsets.BusinessDay(1)
+b_date_last_month_end = datetime.today() + offsets.BMonthEnd(-1)
+b_date_this_month_begin = datetime.today() + offsets.BMonthBegin(-1)
+b_date_this_month_end = datetime.today() + offsets.BMonthEnd(0)
+b_date_last_quarter_end = datetime.today() + offsets.BQuarterEnd(-1)
+b_date_this_quarter_end = datetime.today() + offsets.BQuarterEnd(0)
