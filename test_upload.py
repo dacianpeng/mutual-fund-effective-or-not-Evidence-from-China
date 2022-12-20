@@ -4,37 +4,26 @@ import numpy as np
 import pymysql
 from dask import delayed
 from sqlalchemy import create_engine
-import pandas as pd
 
+df = ddf.read_csv('data/CSMAR/invest_detail/*', low_memory=False, dtype={'Symbol': 'object'}).compute()
+df = df.fillna('NULL')
 
+TABLE_NAME = 'IDX_Smprat'
 
-df_to_be_insert = ddf.read_csv('data/CSMAR/invest_detail/*', low_memory=False, dtype={'Symbol': 'object'}).compute()
-df_to_be_insert = df_to_be_insert.fillna('NULL')
-
-TABLE_NAME = 'FUND_NAV'
-# TABLE_NAME = 'FUND_MainInfo'
-# df_to_be_insert = pd.read_csv(f'data/CSMAR/{TABLE_NAME}.csv')
 
 sql_engine = create_engine("mysql://root:Doushi0930!@dacian.cc:38322/csmar")
-df_to_be_insert.iloc[0: 0].to_sql(TABLE_NAME, sql_engine, if_exists='append')
+df.iloc[0: 0].to_sql(TABLE_NAME, sql_engine, if_exists='append')
 PARTITIONS = 1000
 N_WORKERS = 8
 
-def split_equal(value, parts):
-    '''
-    split a number into parts interval
-    '''
-    value = float(value)
-    return [round(i * value / parts) for i in range(0, parts + 1)]
+all_parts = np.array_split(df, PARTITIONS)
 
-all_parts = split_equal(len(df_to_be_insert), PARTITIONS)
-
-def partly_insert(this_part_sequence):
+def partly_insert(part_sequence):
     '''
-    a really cool toy
+    pass
     '''
-    part= df_to_be_insert.iloc[all_parts[this_part_sequence]: all_parts[this_part_sequence + 1]]
-    con = pymysql.connect(host='dacian.cc', user='root', password="Doushi0930!",
+    part= df.iloc[all_parts[part_sequence]: all_parts[part_sequence + 1]]
+    con = pymysql.connect(host='localhost', user='root', password="Doushi0930!",
                            database='csmar', port=38321,
                            charset='utf8')
     cursor = con.cursor()
